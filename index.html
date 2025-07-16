@@ -1,805 +1,121 @@
-<!DOCTY<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="cs">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>InsightEcho s.r.o. - Optimalizace prodeje a procesů v České republice</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>InsightEcho</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    body { font-family:'Inter', sans-serif; margin:0; scroll-behavior:smooth; }
+    header { position:fixed; top:0; left:0; right:0; background:#fff; padding:1rem; display:flex; justify-content:space-between; align-items:center; box-shadow:0 2px 4px rgba(0,0,0,0.1); z-index:1000;}
+    nav a { margin:0 .5rem; text-decoration:none; color:#333; }
+    .lang { border:none; background:#eee; padding:.5rem; cursor:pointer; }
+    .section { padding:6rem 1rem 4rem; max-width:1200px; margin:auto; text-align:center; opacity:0; transform:translateY(20px); transition: opacity .6s ease, transform .6s ease;}
+    .visible { opacity:1; transform:translateY(0); }
 
-        body {
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-            line-height: 1.6;
-            color: #333;
-        }
+    .hero h1 { font-size:2.2rem; margin-bottom:.5rem; }
+    .hero p { font-size:1.1rem; margin-bottom:1.5rem; }
+    .btn { padding:.8rem 1.2rem; background:#333; color:#fff; border:none; cursor:pointer; }
+    .services, .reasons { display:flex; flex-wrap:wrap; justify-content:center; gap:1rem; margin-top:2rem; }
+    .card { background:#f8f8f8; padding:1.5rem; border-radius:8px; flex:1; min-width:240px; max-width:300px; }
+    .cta { background:#faf5ef; padding:3rem 1rem; }
 
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 20px;
-        }
-
-        /* Header */
-        header {
-            background: linear-gradient(135deg, #2563eb 0%, #0891b2 100%);
-            color: white;
-            padding: 1rem 0;
-            position: fixed;
-            width: 100%;
-            top: 0;
-            z-index: 1000;
-            box-shadow: 0 2px 20px rgba(0,0,0,0.1);
-        }
-
-        nav {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .logo {
-            font-size: 1.5rem;
-            font-weight: 700;
-            background: linear-gradient(45deg, #fbbf24, #f59e0b);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-
-        .nav-links {
-            display: flex;
-            list-style: none;
-            gap: 2rem;
-        }
-
-        .nav-links a {
-            color: white;
-            text-decoration: none;
-            transition: color 0.3s;
-            font-weight: 500;
-        }
-
-        .nav-links a:hover {
-            color: #fbbf24;
-        }
-
-        /* Hero Section */
-        .hero {
-            background: linear-gradient(135deg, #1e40af 0%, #0891b2 50%, #059669 100%);
-            color: white;
-            padding: 120px 0 80px;
-            text-align: center;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .hero::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grid" width="10" height="10" patternUnits="userSpaceOnUse"><path d="M 10 0 L 0 0 0 10" fill="none" stroke="rgba(255,255,255,0.05)" stroke-width="1"/></pattern></defs><rect width="100" height="100" fill="url(%23grid)"/></svg>') repeat;
-        }
-
-        .hero-content {
-            position: relative;
-            z-index: 2;
-        }
-
-        .hero h1 {
-            font-size: 3.5rem;
-            margin-bottom: 1.5rem;
-            font-weight: 800;
-            background: linear-gradient(45deg, #ffffff, #fbbf24);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-
-        .hero p {
-            font-size: 1.25rem;
-            margin-bottom: 2rem;
-            opacity: 0.9;
-            max-width: 800px;
-            margin-left: auto;
-            margin-right: auto;
-        }
-
-        .cta-button {
-            display: inline-block;
-            background: linear-gradient(45deg, #f59e0b, #fbbf24);
-            color: #1e40af;
-            padding: 15px 40px;
-            text-decoration: none;
-            border-radius: 50px;
-            font-weight: 700;
-            font-size: 1.1rem;
-            transition: transform 0.3s, box-shadow 0.3s;
-            box-shadow: 0 10px 30px rgba(245, 158, 11, 0.3);
-        }
-
-        .cta-button:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 15px 40px rgba(245, 158, 11, 0.4);
-        }
-
-        /* Services Section */
-        .services {
-            padding: 100px 0;
-            background: #f8fafc;
-        }
-
-        .section-title {
-            text-align: center;
-            font-size: 2.5rem;
-            margin-bottom: 3rem;
-            color: #1e40af;
-            font-weight: 700;
-        }
-
-        .services-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-            gap: 3rem;
-            margin-top: 3rem;
-        }
-
-        .service-card {
-            background: white;
-            padding: 3rem 2rem;
-            border-radius: 20px;
-            text-align: center;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.1);
-            transition: transform 0.3s, box-shadow 0.3s;
-            border: 1px solid #e2e8f0;
-        }
-
-        .service-card:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 20px 60px rgba(0,0,0,0.15);
-        }
-
-        .service-icon {
-            width: 80px;
-            height: 80px;
-            background: linear-gradient(45deg, #2563eb, #0891b2);
-            border-radius: 50%;
-            margin: 0 auto 2rem;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 2rem;
-        }
-
-        .service-card h3 {
-            font-size: 1.5rem;
-            margin-bottom: 1rem;
-            color: #1e40af;
-            font-weight: 600;
-        }
-
-        .service-card p {
-            color: #64748b;
-            margin-bottom: 2rem;
-            line-height: 1.7;
-        }
-
-        .service-button {
-            background: linear-gradient(45deg, #f59e0b, #fbbf24);
-            color: #1e40af;
-            padding: 12px 30px;
-            border: none;
-            border-radius: 25px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: transform 0.3s;
-        }
-
-        .service-button:hover {
-            transform: scale(1.05);
-        }
-
-        /* About Section */
-        .about {
-            padding: 100px 0;
-            background: white;
-        }
-
-        .about-content {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 4rem;
-            align-items: center;
-        }
-
-        .about-text h2 {
-            font-size: 2.5rem;
-            margin-bottom: 2rem;
-            color: #1e40af;
-            font-weight: 700;
-        }
-
-        .about-text p {
-            color: #64748b;
-            margin-bottom: 1.5rem;
-            font-size: 1.1rem;
-            line-height: 1.8;
-        }
-
-        .about-features {
-            list-style: none;
-            margin-top: 2rem;
-        }
-
-        .about-features li {
-            padding: 0.5rem 0;
-            color: #1e40af;
-            font-weight: 500;
-        }
-
-        .about-features li::before {
-            content: '✓';
-            color: #f59e0b;
-            font-weight: bold;
-            margin-right: 1rem;
-        }
-
-        .about-image {
-            background: linear-gradient(135deg, #2563eb, #0891b2);
-            border-radius: 20px;
-            height: 400px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-size: 4rem;
-        }
-
-        /* Testimonials */
-        .testimonials {
-            padding: 100px 0;
-            background: #f8fafc;
-        }
-
-        .testimonials-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 2rem;
-            margin-top: 3rem;
-        }
-
-        .testimonial-card {
-            background: white;
-            padding: 2rem;
-            border-radius: 15px;
-            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
-        }
-
-        .testimonial-text {
-            font-style: italic;
-            margin-bottom: 1.5rem;
-            color: #4b5563;
-            line-height: 1.7;
-        }
-
-        .testimonial-author {
-            font-weight: 600;
-            color: #1e40af;
-        }
-
-        /* Contact Section */
-        .contact {
-            padding: 100px 0;
-            background: linear-gradient(135deg, #1e40af, #0891b2);
-            color: white;
-        }
-
-        .contact-content {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 4rem;
-        }
-
-        .contact-form {
-            background: rgba(255,255,255,0.1);
-            padding: 2rem;
-            border-radius: 15px;
-            backdrop-filter: blur(10px);
-        }
-
-        .form-group {
-            margin-bottom: 1.5rem;
-        }
-
-        .form-group label {
-            display: block;
-            margin-bottom: 0.5rem;
-            font-weight: 500;
-        }
-
-        .form-group input,
-        .form-group textarea {
-            width: 100%;
-            padding: 12px;
-            border: 1px solid rgba(255,255,255,0.3);
-            border-radius: 8px;
-            background: rgba(255,255,255,0.1);
-            color: white;
-            font-size: 1rem;
-        }
-
-        .form-group input::placeholder,
-        .form-group textarea::placeholder {
-            color: rgba(255,255,255,0.7);
-        }
-
-        .contact-info h3 {
-            font-size: 1.8rem;
-            margin-bottom: 2rem;
-        }
-
-        .contact-item {
-            margin-bottom: 1.5rem;
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-        }
-
-        .contact-item-icon {
-            width: 40px;
-            height: 40px;
-            background: rgba(255,255,255,0.2);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        /* Footer */
-        footer {
-            background: #1e293b;
-            color: white;
-            text-align: center;
-            padding: 2rem 0;
-        }
-
-        /* Responsive */
-        @media (max-width: 768px) {
-            .nav-links {
-                display: none;
-            }
-
-            .hero h1 {
-                font-size: 2.5rem;
-            }
-
-            .about-content,
-            .contact-content {
-                grid-template-columns: 1fr;
-                gap: 2rem;
-            }
-
-            .services-grid {
-                grid-template-columns: 1fr;
-            }
-        }
-
-        /* Smooth scrolling */
-        html {
-            scroll-behavior: smooth;
-        }
-
-        /* Animations */
-        @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(30px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        .service-card,
-        .testimonial-card {
-            animation: fadeInUp 0.6s ease-out;
-        }
-    </style>
+    @media(max-width:768px){
+      .services, .reasons { flex-direction:column; }
+    }
+  </style>
 </head>
 <body>
-    <!-- Header -->
-    <header>
-        <nav class="container">
-            <div class="logo">InsightEcho s.r.o.</div>
-            <ul class="nav-links">
-                <li><a href="#home">Domů</a></li>
-                <li><a href="#services">Služby</a></li>
-                <li><a href="#about">O nás</a></li>
-                <li><a href="#testimonials">Recenze</a></li>
-                <li><a href="#contact">Kontakt</a></li>
-            </ul>
-        </nav>
-    </header>
 
-    <!-- Hero Section -->
-    <section id="home" class="hero">
-        <div class="container">
-            <div class="hero-content">
-                <h1>Optimalizujeme váš business v České republice</h1>
-                <p>Růst prodejů, automatizace procesů a marketing na klíč pro malé a střední podniky. Praktické řešení s důrazem na výsledky a znalost českého trhu.</p>
-                <a href="#contact" class="cta-button">Rezervovat bezplatnou konzultaci</a>
-            </div>
-        </div>
-    </section>
+<header>
+  <div class="logo">InsightEcho</div>
+  <nav>
+    <a href="#hero" data-cz="Domů" data-en="Home">Domů</a>
+    <a href="#services" data-cz="Služby" data-en="Services">Služby</a>
+    <a href="#why" data-cz="Proč s námi" data-en="Why Us">Proč s námi</a>
+    <a href="#cta" data-cz="Konzultace" data-en="Consultation">Konzultace</a>
+  </nav>
+  <button class="lang">EN</button>
+</header>
 
-    <!-- Services Section -->
-    <section id="services" class="services">
-        <div class="container">
-            <h2 class="section-title">Naše služby</h2>
-            <div class="services-grid">
-                <div class="service-card">
-                    <div class="service-icon">📈</div>
-                    <h3>Optimalizace prodejů</h3>
-                    <p>Audit současného prodejního trychtýře, tvorba skriptů a KPI, nastavení motivace týmu. Zvýšíme efektivitu vašich prodejů pomocí ověřených metod.</p>
-                    <button class="service-button">Zjistit více</button>
-                </div>
-                
-                <div class="service-card">
-                    <div class="service-icon">⚙️</div>
-                    <h3>Automatizace procesů</h3>
-                    <p>Implementace CRM systémů (Bitrix, HubSpot), nastavení business procesů od požadavku po report. Snížíme ruční operace a zvýšíme produktivitu.</p>
-                    <button class="service-button">Zjistit více</button>
-                </div>
-        .cta-button {
-            display: inline-block;
-            background: linear-gradient(45deg, #f59e0b, #fbbf24);
-            color: #1e40af;
-            padding: 15px 40px;
-            text-decoration: none;
-            border-radius: 50px;
-            font-weight: 700;
-            font-size: 1.1rem;
-            transition: transform 0.3s, box-shadow 0.3s;
-            box-shadow: 0 10px 30px rgba(245, 158, 11, 0.3);
-        }
+<section class="section hero" id="hero">
+  <h1 data-cz="Pomáháme malým a středním firmám v Česku růst"
+      data-en="We help small and medium businesses in the Czech Republic grow">
+    Pomáháme malým a středním firmám v Česku růst
+  </h1>
+  <p data-cz="Optimalizace prodejů • Nastavení procesů • Marketingová strategie"
+     data-en="Sales Optimization • Process Automation • Marketing Strategy">
+    Optimalizace prodejů • Nastavení procesů • Marketingová strategie
+  </p>
+  <button class="btn" data-cz="Domluvit konzultaci zdarma" data-en="Book a Free Consultation">
+    Domluvit konzultaci zdarma
+  </button>
+</section>
 
-        .cta-button:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 15px 40px rgba(245, 158, 11, 0.4);
-        }
+<section class="section" id="services">
+  <h2 data-cz="Naše služby" data-en="Our Services">Naše služby</h2>
+  <div class="services">
+    <div class="card"><h3 data-cz="Optimalizace prodejního týmu" data-en="Sales Team Optimization">Optimalizace prodejního týmu</h3></div>
+    <div class="card"><h3 data-cz="Automatizace a CRM" data-en="Process & CRM Automation">Automatizace a CRM</h3></div>
+    <div class="card"><h3 data-cz="Marketing a obsah" data-en="Marketing & Content Strategy">Marketing a obsah</h3></div>
+  </div>
+</section>
 
-        /* Services Section */
-        .services {
-            padding: 100px 0;
-            background: #f8fafc;
-        }
+<section class="section" id="why">
+  <h2 data-cz="Proč právě s námi" data-en="Why Work With Us">Proč právě s námi</h2>
+  <div class="reasons">
+    <div class="card">✅ <span data-cz="Zkušenosti s českým trhem" data-en="Experience in the Czech market">Zkušenosti s českým trhem</span></div>
+    <div class="card">✅ <span data-cz="Praktický přístup" data-en="Practical approach">Praktický přístup</span></div>
+    <div class="card">✅ <span data-cz="Měřitelné výsledky" data-en="Measurable results">Měřitelné výsledky</span></div>
+  </div>
+</section>
 
-        .section-title {
-            text-align: center;
-            font-size: 2.5rem;
-            margin-bottom: 3rem;
-            color: #1e40af;
-            font-weight: 700;
-        }
+<section class="section cta" id="cta">
+  <h2 data-cz="Neztrácejte čas и peníze — rezervujte si nezávaznou konzultaci."
+      data-en="Stop wasting time and money — book a free discovery call today.">
+    Neztrácejte čas и peníze — rezervujte si nezávaznou konzultaci.
+  </h2>
+  <button class="btn" data-cz="Domluvit schůzku" data-en="Book Now">Domluvit schůzku</button>
+</section>
 
-        .services-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-            gap: 3rem;
-            margin-top: 3rem;
-        }
+<footer class="section">
+  <div class="footer-cols" style="display:flex; flex-wrap:wrap; justify-content:space-between;">
+    <div><h3>InsightEcho</h3><p data-cz="Pomáháme firmám růst optimalizací byznysu." data-en="We help businesses grow through optimization.">Pomáháme firmám růst optimalizací byznysu.</p></div>
+    <div>
+      <h4 data-cz="Odkazy" data-en="Links">Odkazy</h4>
+      <a href="#hero" data-cz="Domů" data-en="Home">Domů</a>
+      <a href="#services" data-cz="Služby" data-en="Services">Služby</a>
+      <a href="#why" data-cz="Proč s námi" data-en="Why Us">Proč s námi</a>
+    </div>
+    <div>
+      <h4 data-cz="Kontakt" data-en="Contact">Kontakt</h4>
+      <p>Email: info@insightecho.cz</p>
+      <p>Tel: +420 123 456 789</p>
+    </div>
+  </div>
+  <div class="copy" style="text-align:center; margin-top:2rem; font-size:.9rem;">
+    © 2025 InsightEcho. Všechna práva vyhrazena.
+  </div>
+</footer>
 
-        .service-card {
-            background: white;
-            padding: 3rem 2rem;
-            border-radius: 20px;
-            text-align: center;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.1);
-            transition: transform 0.3s, box-shadow 0.3s;
-            border: 1px solid #e2e8f0;
-        }
+<script>
+window.onload = function(){
+  // язык toggle
+  const langBtn = document.querySelector('.lang');
+  langBtn.addEventListener('click',()=>{
+    const lang = langBtn.textContent==='EN'?'en':'cz';
+    langBtn.textContent = lang==='en'?'CZ':'EN';
+    document.querySelectorAll('[data-'+lang+']').forEach(el=>{
+      el.textContent = el.getAttribute('data-'+lang);
+    });
+  });
+  // наблюдение за секциями
+  const obs = new IntersectionObserver(entries=>{
+    entries.forEach(e=> e.isIntersecting && e.target.classList.add('visible'));
+  },{threshold:0.15});
+  document.querySelectorAll('.section').forEach(s=>obs.observe(s));
+};
+</script>
 
-        .service-card:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 20px 60px rgba(0,0,0,0.15);
-        }
-
-        .service-icon {
-            width: 80px;
-            height: 80px;
-            background: linear-gradient(45deg, #2563eb, #0891b2);
-            border-radius: 50%;
-            margin: 0 auto 2rem;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 2rem;
-        }
-
-        .service-card h3 {
-            font-size: 1.5rem;
-            margin-bottom: 1rem;
-            color: #1e40af;
-            font-weight: 600;
-        }
-
-        .service-card p {
-            color: #64748b;
-            margin-bottom: 2rem;
-            line-height: 1.7;
-        }
-
-        .service-button {
-            background: linear-gradient(45deg, #f59e0b, #fbbf24);
-            color: #1e40af;
-            padding: 12px 30px;
-            border: none;
-            border-radius: 25px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: transform 0.3s;
-        }
-
-        .service-button:hover {
-            transform: scale(1.05);
-        }
-
-        /* About Section */
-        .about {
-            padding: 100px 0;
-            background: white;
-        }
-
-        .about-content {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 4rem;
-            align-items: center;
-        }
-
-        .about-text h2 {
-            font-size: 2.5rem;
-            margin-bottom: 2rem;
-            color: #1e40af;
-            font-weight: 700;
-        }
-
-        .about-text p {
-            color: #64748b;
-            margin-bottom: 1.5rem;
-            font-size: 1.1rem;
-            line-height: 1.8;
-        }
-
-        .about-features {
-            list-style: none;
-            margin-top: 2rem;
-        }
-
-        .about-features li {
-            padding: 0.5rem 0;
-            color: #1e40af;
-            font-weight: 500;
-        }
-
-        .about-features li::before {
-            content: '✓';
-            color: #f59e0b;
-            font-weight: bold;
-            margin-right: 1rem;
-        }
-
-        .about-image {
-            background: linear-gradient(135deg, #2563eb, #0891b2);
-            border-radius: 20px;
-            height: 400px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-size: 4rem;
-        }
-
-        /* Testimonials */
-        .testimonials {
-            padding: 100px 0;
-            background: #f8fafc;
-        }
-
-        .testimonials-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 2rem;
-            margin-top: 3rem;
-        }
-
-        .testimonial-card {
-            background: white;
-            padding: 2rem;
-            border-radius: 15px;
-            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
-        }
-
-        .testimonial-text {
-            font-style: italic;
-            margin-bottom: 1.5rem;
-            color: #4b5563;
-            line-height: 1.7;
-        }
-
-        .testimonial-author {
-            font-weight: 600;
-            color: #1e40af;
-        }
-
-        /* Contact Section */
-        .contact {
-            padding: 100px 0;
-            background: linear-gradient(135deg, #1e40af, #0891b2);
-            color: white;
-        }
-
-        .contact-content {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 4rem;
-        }
-
-        .contact-form {
-            background: rgba(255,255,255,0.1);
-            padding: 2rem;
-            border-radius: 15px;
-            backdrop-filter: blur(10px);
-        }
-
-        .form-group {
-            margin-bottom: 1.5rem;
-        }
-
-        .form-group label {
-            display: block;
-            margin-bottom: 0.5rem;
-            font-weight: 500;
-        }
-
-        .form-group input,
-        .form-group textarea {
-            width: 100%;
-            padding: 12px;
-            border: 1px solid rgba(255,255,255,0.3);
-            border-radius: 8px;
-            background: rgba(255,255,255,0.1);
-            color: white;
-            font-size: 1rem;
-        }
-
-        .form-group input::placeholder,
-        .form-group textarea::placeholder {
-            color: rgba(255,255,255,0.7);
-        }
-
-        .contact-info h3 {
-            font-size: 1.8rem;
-            margin-bottom: 2rem;
-        }
-
-        .contact-item {
-            margin-bottom: 1.5rem;
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-        }
-
-        .contact-item-icon {
-            width: 40px;
-            height: 40px;
-            background: rgba(255,255,255,0.2);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        /* Footer */
-        footer {
-            background: #1e293b;
-            color: white;
-            text-align: center;
-            padding: 2rem 0;
-        }
-
-        /* Responsive */
-        @media (max-width: 768px) {
-            .nav-links {
-                display: none;
-            }
-
-            .hero h1 {
-                font-size: 2.5rem;
-            }
-
-            .about-content,
-            .contact-content {
-                grid-template-columns: 1fr;
-                gap: 2rem;
-            }
-
-            .services-grid {
-                grid-template-columns: 1fr;
-            }
-        }
-
-        /* Smooth scrolling */
-        html {
-            scroll-behavior: smooth;
-        }
-
-        /* Animations */
-        @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(30px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        .service-card,
-        .testimonial-card {
-            animation: fadeInUp 0.6s ease-out;
-        }
-    </style>
-</head>
-<body>
-    <!-- Header -->
-    <header>
-        <nav class="container">
-            <div class="logo">InsightEcho s.r.o.</div>
-            <ul class="nav-links">
-                <li><a href="#home">Domů</a></li>
-                <li><a href="#services">Služby</a></li>
-                <li><a href="#about">O nás</a></li>
-                <li><a href="#testimonials">Recenze</a></li>
-                <li><a href="#contact">Kontakt</a></li>
-            </ul>
-        </nav>
-    </header>
-
-    <!-- Hero Section -->
-    <section id="home" class="hero">
-        <div class="container">
-            <div class="hero-content">
-                <h1>Optimalizujeme váš business v České republice</h1>
-                <p>Růst prodejů, automatizace procesů a marketing na klíč pro malé a střední podniky. Praktické řešení s důrazem na výsledky a znalost českého trhu.</p>
-                <a href="#contact" class="cta-button">Rezervovat bezplatnou konzultaci</a>
-            </div>
-        </div>
-    </section>
-
-    <!-- Services Section -->
-    <section id="services" class="services">
-        <div class="container">
-            <h2 class="section-title">Naše služby</h2>
-            <div class="services-grid">
-                <div class="service-card">
-                    <div class="service-icon">📈</div>
-                    <h3>Optimalizace prodejů</h3>
-                    <p>Audit současného prodejního trychtýře, tvorba skriptů a KPI, nastavení motivace týmu. Zvýšíme efektivitu vašich prodejů pomocí ověřených metod.</p>
-                    <button class="service-button">Zjistit více</button>
-                </div>
-                
-                <div class="service-card">
-                    <div class="service-icon">⚙️</div>
-                    <h3>Automatizace procesů</h3>
-                    <p>Implementace CRM systémů (Bitrix, HubSpot), nastavení business procesů od požadavku po report. Snížíme ruční operace a zvýšíme produktivitu.</p>
-                    <button class="service-button">Zjistit více</button>
-                </div>
+</body>
+</html>
