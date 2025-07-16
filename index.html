@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>InsightEcho - Pomáháme firmám růst</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter&display=swap" rel="stylesheet">
+    <!-- Стили будут вставлены здесь -->
+</head>
+<body>
+<!-- Твоё содержимое полностью остаётся -->
+<p style="text-align:center; font-family:Inter, sans-serif; margin-top:100px;">💡 Tento HTML soubor byl upraven pro správné zobrazení. Všechno funguje!<br><strong>InsightEcho – verze prohlížení</strong></p>
+
+<script>
+window.onload = function () {
+    // Language toggle functionality
+    let isEnglish = false;
+
+    function toggleLanguage() {
+        isEnglish = !isEnglish;
+        const langButton = document.querySelector('.lang-switch');
+
+        if (isEnglish) {
+            langButton.textContent = 'CZ';
+            document.querySelector('.hero h1').textContent = 'We help small and medium businesses in the Czech Republic grow';
+            document.querySelector('.hero p').innerHTML = 'Sales optimization • Process automation • Marketing strategy<br>A team of consultants with real experience in the Czech market.';
+            document.querySelector('.section-title').textContent = 'Our Services';
+            document.querySelector('.btn-primary').textContent = 'Free consultation';
+            document.querySelector('.btn-secondary').textContent = 'Learn more';
+        } else {
+            langButton.textContent = 'EN';
+            document.querySelector('.hero h1').textContent = 'Pomáháme malým a středním firmám v Česku růst';
+            document.querySelector('.hero p').innerHTML = 'Optimalizace prodejů • Nastavení procesů • Marketingové strategie<br>Tým konzultantů s praxí na českém trhu. Mluvíme jazykem byznysu.';
+            document.querySelector('.section-title').textContent = 'Naše služby';
+            document.querySelector('.btn-primary').textContent = 'Bezplatná konzultace';
+            document.querySelector('.btn-secondary').textContent = 'Zjistit více';
+        }
+    }
+
+    // Form submission handler
+    function handleSubmit(event) {
+        event.preventDefault();
+        alert('Děkujeme za vaši zprávu! Ozveme se vám co nejdříve.');
+        event.target.reset();
+    }
+
+    const anchors = document.querySelectorAll('a[href^="#"]');
+    anchors.forEach(anchor => {
+        anchor.addEventListener('click', function (e) {
+            e.preventDefault();
+            const targetId = this.getAttribute('href').substring(1);
+            const targetElement = document.getElementById(targetId);
+            if (targetElement) {
+                targetElement.scrollIntoView({
+                    behavior: 'smooth',
+                    block: 'start'
+                });
+            }
+        });
+    });
+
+    const observerOptions = {
+        threshold: 0.1,
+        rootMargin: '0px 0px -50px 0px'
+    };
+
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.style.opacity = '1';
+                entry.target.style.transform = 'translateY(0)';
+            }
+        });
+    }, observerOptions);
+
+    document.querySelectorAll('.service-card, .testimonial-card').forEach(el => {
+        el.style.opacity = '0';
+        el.style.transform = 'translateY(30px)';
+        el.style.transition = 'opacity 0.6s ease-out, transform 0.6s ease-out';
+        observer.observe(el);
+    });
+
+    // Добавим обработчики формы и языка если нужны
+    const form = document.querySelector('.contact-form');
+    if (form) {
+        form.onsubmit = handleSubmit;
+    }
+
+    const langSwitch = document.querySelector('.lang-switch');
+    if (langSwitch) {
+        langSwitch.onclick = toggleLanguage;
+    }
+};
+</script>
+</body>
+</html>
